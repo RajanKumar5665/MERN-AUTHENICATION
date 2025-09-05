@@ -17,7 +17,7 @@ const __dirname = path.resolve();
 connectDB();
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
+  "https://mern-authenication-osn3.onrender.com",
 ]
 
 // Middleware

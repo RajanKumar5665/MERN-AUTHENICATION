@@ -3,19 +3,19 @@ import { assets } from "../assets";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AppContext } from "../context/AppContext"; // ✅ check path
+import { AppContext } from "../context/AppContext"; 
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
-  axios.defaults.withCredentials = true; // ✅ allow cookies/session
+  axios.defaults.withCredentials = true; 
 
-  // ✅ include isLoggedIn, userData
+  
   const { backendurl, getUserData, isLoggedIn, userData } =
     useContext(AppContext);
 
-  const inputRefs = useRef([]); // store refs of OTP boxes
+  const inputRefs = useRef([]); 
 
-  // 👉 Auto move to next input
+  
   const handleInput = (e, index) => {
     const value = e.target.value;
     if (value && index < inputRefs.current.length - 1) {
@@ -23,14 +23,14 @@ const VerifyEmail = () => {
     }
   };
 
-  // 👉 Handle backspace
+ 
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !e.target.value && index > 0) {
       inputRefs.current[index - 1].focus();
     }
   };
 
-  // 👉 Paste OTP into boxes
+
   const handlePaste = (e) => {
     const paste = e.clipboardData.getData("text").trim().slice(0, 6);
     const pasteArray = paste.replace(/\D/g, "").split("");
@@ -48,7 +48,7 @@ const VerifyEmail = () => {
     }
   };
 
-  // 👉 Submit OTP
+ 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -61,7 +61,7 @@ const VerifyEmail = () => {
       }
 
       const { data } = await axios.post(
-        `${backendurl}/api/auth/verify-account`, // ✅ use backendurl
+        `${backendurl}/api/auth/verify-account`, 
         { otp },
         { withCredentials: true }
       );
@@ -78,7 +78,7 @@ const VerifyEmail = () => {
     }
   };
 
-  // ✅ Redirect if already verified
+  
   useEffect(() => {
     if (isLoggedIn && userData?.isAccountVerified) {
       navigate("/");

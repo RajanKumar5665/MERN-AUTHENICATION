@@ -20,7 +20,7 @@ const Login = () => {
       axios.defaults.withCredentials = true;
 
       if (state === "Sign Up") {
-        const { data } = await axios.post("http://localhost:5000/api/auth/register", {
+        const { data } = await axios.post("https://mern-authenication-osn3.onrender.com/api/auth/register", {
           name,
           email,
           password,
@@ -28,7 +28,7 @@ const Login = () => {
 
         if (data.success) {
           toast.success(data.message || "Signup successful ✅");
-          // ✅ Signup ke baad login page pe redirect
+         
           setState("Login");
           navigate("/login");
         } else {
@@ -44,7 +44,7 @@ const Login = () => {
           toast.success(data.message || "Login successful ✅");
           setIsLoggedIn(true);
           getUserData();
-          // ✅ Login ke baad home page pe redirect
+         
           navigate("/");
         } else {
           toast.error(data?.message || "Something went wrong!");
