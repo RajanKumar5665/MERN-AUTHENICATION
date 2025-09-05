@@ -13,7 +13,9 @@ const port = process.env.PORT || 5000;
 // Connect to the database
 connectDB();
 
-const allowedOrigins = ['http://localhost:5173']
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+]
 
 // Middleware
 app.use(express.json());
@@ -37,17 +39,3 @@ const server = app.listen(port, () => {
 });
 
 
-// Handle graceful shutdown and port conflicts
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`Port ${port} is already in use. Trying a different port...`);
-    setTimeout(() => {
-      server.close();
-      app.listen(port + 1, () => {
-        console.log(`Server started on PORT:${port + 1}`);
-      });
-    }, 1000);
-  } else {
-    console.error('Server error:', err);
-  }
-});
