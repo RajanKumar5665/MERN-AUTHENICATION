@@ -6,9 +6,12 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/mongodb.js";
 import authRouter from './routes/auth.routes.js';
 import userRouter from "./routes/user.Routes.js";
+import path from "path";
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+const __dirname = path.resolve();
 
 // Connect to the database
 connectDB();
@@ -26,12 +29,15 @@ app.use(cors({
 }));
 
 
-// API Endpoints
-app.get('/', (req, res) => res.send("API Working"));
-
-
+// Routes
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (_, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // Start the server
 const server = app.listen(port, () => {
