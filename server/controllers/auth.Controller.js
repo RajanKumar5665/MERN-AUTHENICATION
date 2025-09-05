@@ -1,22 +1,20 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import userModel from '../middlewares/models/userModel.js';
+import userModel from '../models/userModel.js';
 import transporter from '../config/nodemailer.js';
 import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from '../config/emailtempelete.js';
 
-/**
- * Utility: Replace {{placeholders}} in templates (global + safe)
- */
+
 const renderTemplate = (template, data = {}) => {
   let html = template;
   for (const [key, value] of Object.entries(data)) {
-    const pattern = new RegExp(`{{\\s*${key}\\s*}}`, 'g'); // matches {{key}} with optional spaces
+    const pattern = new RegExp(`{{\\s*${key}\\s*}}`, 'g'); 
     html = html.replace(pattern, String(value ?? ''));
   }
   return html;
 };
 
-// ================= Register ==================
+
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -38,8 +36,8 @@ export const register = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,        // Render/Vercel => true
-      sameSite: "none",    // cross-site requests allow
+      secure: true,       
+      sameSite: "none",    
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
@@ -60,7 +58,7 @@ export const register = async (req, res) => {
   }
 };
 
-// ================= Login ==================
+
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -79,8 +77,8 @@ export const login = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,        // Render/Vercel => true
-      sameSite: "none",    // cross-site requests allow
+      secure: true,        
+      sameSite: "none",    
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
@@ -90,13 +88,13 @@ export const login = async (req, res) => {
   }
 };
 
-// ================= Logout ==================
+
 export const logout = async (req, res) => {
   try {
     res.clearCookie('token', {
       httpOnly: true,
-      secure: true,        // Render/Vercel => true
-      sameSite: "none",    // cross-site requests allow
+      secure: true,        
+      sameSite: "none",    
     });
     return res.json({ success: true, message: "Logged Out" });
   } catch (error) {
@@ -104,7 +102,7 @@ export const logout = async (req, res) => {
   }
 };
 
-// ================= Send Verification OTP ==================
+
 export const sendVerifyOtp = async (req, res) => {
   const { userId } = req.body;
 
@@ -137,7 +135,7 @@ export const sendVerifyOtp = async (req, res) => {
   }
 };
 
-// ================= Verify Email ==================
+
 export const verifyEmail = async (req, res) => {
   const { userId, otp } = req.body;
 
@@ -168,7 +166,7 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-// ================= Auth Check ==================
+
 export const isAuthenticated = async (req, res) => {
   try {
     return res.json({ success: true });
@@ -177,7 +175,7 @@ export const isAuthenticated = async (req, res) => {
   }
 };
 
-// ================= Send Reset OTP ==================
+
 export const sendResetOtp = async (req, res) => {
   const { email } = req.body;
 
@@ -211,7 +209,7 @@ export const sendResetOtp = async (req, res) => {
   }
 };
 
-// ================= Reset Password ==================
+
 export const resetPassword = async (req, res) => {
   const { email, otp, newPassword } = req.body;
 
