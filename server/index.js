@@ -17,7 +17,7 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 const allowedOrigins = [
-  "https://mern-authenication-osn3.onrender.com",
+  process.env.FRONTEND_URL,
 ]
 
 // Middleware
